@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "physmemmapmap"
+description = "PMMM - Visualize physical memory usage across forked processes"
+authors = [
+  {name = "kyori19", email = "kyori@accelf.net"},
+]
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = [
+  "Private :: Install from GitHub",
+]
+dynamic = ["version"]
