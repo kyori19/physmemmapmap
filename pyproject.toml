@@ -14,3 +14,11 @@ classifiers = [
   "Private :: Install from GitHub",
 ]
 dynamic = ["version"]
+
+dependencies = [
+  "psutil",
+  "pyprctl",
+]
+
+[project.scripts]
+pmmm = "cli:pmmm"
