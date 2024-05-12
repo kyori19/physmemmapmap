@@ -33,6 +33,11 @@ def parse_args():
     default=None,
     help='filter memory maps by pathname. (default: None)',
   )
+  parser.add_argument(
+    '--no-sudo',
+    action='store_true',
+    help='stop using sudo to gain permissions. (default: false)',
+  )
   return parser.parse_args()
 
 
@@ -68,12 +73,17 @@ def get_ugid(procs: list[Process]) -> tuple[int, int]:
   return uid, gid
 
 
-def sudo():
+def sudo(no_sudo: bool):
+  if no_sudo:
+    raise CLIException('insufficient permissions, cannot continue.')
+
   print('insufficient permissions, re-running via sudo.')
-  execvp('sudo', orig_argv)
+  args = orig_argv.copy()
+  args.append('--no-sudo')
+  execvp('sudo', args)
 
 
-def get_capabilities(tuid: int, tgid: int):
+def get_capabilities(tuid: int, tgid: int, no_sudo: bool):
   cuid = getuid()
   cgid = getgid()
   caps = CapState.get_current()
@@ -97,7 +107,7 @@ def get_capabilities(tuid: int, tgid: int):
       caps.set_current()
       print(caps)
     except PermissionError:
-      sudo()
+      sudo(no_sudo)
 
   if tgid != cgid:
     # change gid first because setuid clears all effective caps
@@ -121,7 +131,7 @@ def pmmm():
     args = parse_args()
     procs = get_procs(args.pid, args.exact)
     ugid = get_ugid(procs)
-    get_capabilities(*ugid)
+    get_capabilities(*ugid, args.no_sudo)
 
     analyse_procs(procs, args.pathname[0] if args.pathname else None)
   except CLIException as e:
