@@ -5,6 +5,8 @@ from sys import orig_argv
 from psutil import NoSuchProcess, Process
 from pyprctl import Cap, CapState, get_keepcaps, set_keepcaps
 
+from procs import analyse_procs
+
 
 class CLIException(Exception):
   pass
@@ -24,6 +26,12 @@ def parse_args():
     '-e', '--exact',
     action='store_true',
     help='stop including subprocesses to the result. (default: false)',
+  )
+  parser.add_argument(
+    '-p', '--pathname',
+    nargs=1,
+    default=None,
+    help='filter memory maps by pathname. (default: None)',
   )
   return parser.parse_args()
 
@@ -114,6 +122,8 @@ def pmmm():
     procs = get_procs(args.pid, args.exact)
     ugid = get_ugid(procs)
     get_capabilities(*ugid)
+
+    analyse_procs(procs, args.pathname[0] if args.pathname else None)
   except CLIException as e:
     print(f'Error: {e.args[0]}')
     exit(1)
