@@ -16,6 +16,7 @@ classifiers = [
 dynamic = ["version"]
 
 dependencies = [
+  "matplotlib",
   "psutil",
   "pyprctl",
 ]

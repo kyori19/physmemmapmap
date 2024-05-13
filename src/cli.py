@@ -34,6 +34,12 @@ def parse_args():
     help='filter memory maps by pathname. (default: None)',
   )
   parser.add_argument(
+    '-o', '--output',
+    nargs=1,
+    default='plot.png',
+    help='output file path for the plot. (default: plot.png)',
+  )
+  parser.add_argument(
     '--no-sudo',
     action='store_true',
     help='stop using sudo to gain permissions. (default: false)',
@@ -133,7 +139,7 @@ def pmmm():
     ugid = get_ugid(procs)
     get_capabilities(*ugid, args.no_sudo)
 
-    analyse_procs(procs, args.pathname[0] if args.pathname else None)
+    analyse_procs(procs, args.pathname[0] if args.pathname else None, args.output[0])
   except CLIException as e:
     print(f'Error: {e.args[0]}')
     exit(1)

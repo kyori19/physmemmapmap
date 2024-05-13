@@ -2,6 +2,7 @@ from collections.abc import Iterator
 from psutil import Process
 
 from pagemap import ProcPageMap, maps_from_pid, page_maps_from_maps
+from plot import plot
 
 
 def page_maps_from_pid(pid: int, pathname: str | None) -> Iterator[ProcPageMap]:
@@ -13,7 +14,7 @@ def page_maps_from_pid(pid: int, pathname: str | None) -> Iterator[ProcPageMap]:
   return page_maps_from_maps(pid, maps)
 
 
-def analyse_procs(procs: list[Process], pathname: str | None):
+def analyse_procs(procs: list[Process], pathname: str | None, output: str):
   page_maps_per_pid = {
     proc.pid: page_maps_from_pid(proc.pid, pathname)
     for proc in procs
@@ -33,4 +34,4 @@ def analyse_procs(procs: list[Process], pathname: str | None):
     for pids, pfns in per_pids.items()
   }
 
-  print(count_per_pids)
+  plot(count_per_pids, output)
