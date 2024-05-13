@@ -19,5 +19,6 @@ def plot(count_per_pids: dict[set[int], int], output: str):
 
   ax.set_yticks(range(1, len(sorted_pids) + 1), labels=sorted_pids)
 
-  plt.savefig('plot.png')
+  plt.savefig(output)
   plt.show()
+  print(f'plot saved to {output}')
