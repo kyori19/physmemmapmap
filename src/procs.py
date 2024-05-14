@@ -23,7 +23,7 @@ def analyse_procs(procs: list[Process], pathname: str | None, output: str):
   per_page = {}
   for pid, page_maps in page_maps_per_pid.items():
     for page_map in page_maps:
-      per_page.setdefault(page_map.pfn, set()).add(pid)
+      per_page.setdefault([page_map.present, page_map.pfn], set()).add(pid)
 
   per_pids = {}
   for pfn, pids in per_page.items():
