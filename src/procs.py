@@ -14,7 +14,7 @@ def page_maps_from_pid(pid: int, pathname: str | None) -> Iterator[ProcPageMap]:
   return page_maps_from_maps(pid, maps)
 
 
-def analyse_procs(procs: list[Process], pathname: str | None, output: str):
+def analyse_procs(procs: list[Process], pathname: str | None, output: str, fixed_width: int | None):
   page_maps_per_pid = {
     proc.pid: page_maps_from_pid(proc.pid, pathname)
     for proc in procs
@@ -34,4 +34,4 @@ def analyse_procs(procs: list[Process], pathname: str | None, output: str):
     for pids, pfns in per_pids.items()
   }
 
-  plot(count_per_pids, output)
+  plot(count_per_pids, output, fixed_width)

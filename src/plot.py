@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-def plot(count_per_pids: dict[set[int], int], output: str):
+def plot(count_per_pids: dict[set[int], int], output: str, fixed_width: int | None):
   ax = plt.gca()
 
   sorted_counts = sorted(count_per_pids.items(), key=lambda x: x[1], reverse=True)
@@ -16,6 +16,9 @@ def plot(count_per_pids: dict[set[int], int], output: str):
   for i, pid in enumerate(sorted_pids, 1):
     bars = bar_for_pid[pid]
     ax.broken_barh(bars, (i - 0.5, 1), facecolors=f'C{i}', edgecolor='black')
+
+  if fixed_width:
+    ax.set_xlim(0, fixed_width)
 
   ax.set_yticks(range(1, len(sorted_pids) + 1), labels=sorted_pids)
 
