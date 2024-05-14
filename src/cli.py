@@ -36,7 +36,7 @@ def parse_args():
   parser.add_argument(
     '-o', '--output',
     nargs=1,
-    default='plot.png',
+    default=['plot.png'],
     help='output file path for the plot. (default: plot.png)',
   )
   parser.add_argument(
