@@ -51,4 +51,4 @@ def page_maps_from_maps(pid: int, maps: Iterator[ProcMap]) -> Iterator[ProcPageM
         if preadv(f.fileno(), [buf], int(i * 8 / 4096)) != 8:
           break
 
-        yield ProcPageMap.from_bits(int.from_bytes(buf))
+        yield ProcPageMap.from_bits(int.from_bytes(buf, byteorder='little'))
