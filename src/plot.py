@@ -35,6 +35,7 @@ def count_per_pids(procs: list[Process], pathname: str | None):
 
 
 def plot(procs: list[Process], pathname: str | None, output: str, fixed_width: int | None):
+  plt.gcf().set_layout_engine('constrained')
   ax = plt.gca()
 
   sorted_counts = sorted(count_per_pids(procs, pathname).items(), key=lambda x: x[1], reverse=True)
@@ -46,15 +47,15 @@ def plot(procs: list[Process], pathname: str | None, output: str, fixed_width: i
       bar_for_pid.setdefault(pid, []).append([offset, count])
     offset += count
 
-  sorted_pids = sorted(bar_for_pid.keys(), reverse=True)
-  for i, pid in enumerate(sorted_pids, 1):
-    bars = bar_for_pid[pid]
+  procs = sorted(procs, key=lambda proc: proc.pid, reverse=True)
+  for i, proc in enumerate(procs, 1):
+    bars = bar_for_pid[proc.pid]
     ax.broken_barh(bars, (i - 0.5, 1), facecolors=f'C{i}', edgecolor='black')
 
   if fixed_width:
     ax.set_xlim(0, fixed_width)
 
-  ax.set_yticks(range(1, len(sorted_pids) + 1), labels=sorted_pids)
+  ax.set_yticks(range(1, len(procs) + 1), labels=map(lambda proc: f'{proc.name()} - {proc.pid}', procs))
 
   plt.savefig(output)
   plt.show()
