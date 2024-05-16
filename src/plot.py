@@ -1,4 +1,5 @@
 from collections.abc import Iterator
+from textwrap import fill
 import matplotlib.pyplot as plt
 from psutil import Process
 
@@ -55,7 +56,7 @@ def plot(procs: list[Process], pathname: str | None, output: str, fixed_width: i
   if fixed_width:
     ax.set_xlim(0, fixed_width)
 
-  ax.set_yticks(range(1, len(procs) + 1), labels=map(lambda proc: f'{proc.name()} - {proc.pid}', procs))
+  ax.set_yticks(range(1, len(procs) + 1), labels=map(lambda proc: f'{fill(' '.join(proc.cmdline()), width=32, max_lines=3)} - {proc.pid}', procs))
 
   plt.savefig(output)
   plt.show()
