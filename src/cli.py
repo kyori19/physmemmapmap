@@ -5,7 +5,7 @@ from sys import orig_argv
 from psutil import NoSuchProcess, Process
 from pyprctl import Cap, CapState, get_keepcaps, set_keepcaps
 
-from procs import analyse_procs
+from plot import plot
 
 
 class CLIException(Exception):
@@ -146,7 +146,7 @@ def pmmm():
     ugid = get_ugid(procs)
     get_capabilities(*ugid, args.no_sudo)
 
-    analyse_procs(procs, args.pathname[0] if args.pathname else None, args.output[0], args.fixed_width[0] if args.fixed_width else None)
+    plot(procs, args.pathname[0] if args.pathname else None, args.output[0], args.fixed_width[0] if args.fixed_width else None)
   except CLIException as e:
     print(f'Error: {e.args[0]}')
     exit(1)
