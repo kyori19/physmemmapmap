@@ -56,7 +56,7 @@ def plot(procs: list[Process], pathname: str | None, output: str, fixed_width: i
   if fixed_width:
     ax.set_xlim(0, fixed_width)
 
-  ax.set_yticks(range(1, len(procs) + 1), labels=map(lambda proc: f'<{proc.pid}>\n{fill(' '.join(proc.cmdline()), width=32, max_lines=2)}', procs))
+  ax.set_yticks(range(1, len(procs) + 1), labels=map(lambda proc: f'<{proc.pid}>\n{fill(" ".join(proc.cmdline()), width=32, max_lines=2)}', procs))
 
   plt.savefig(output)
   plt.show()
