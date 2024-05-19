@@ -36,7 +36,7 @@ def count_per_pids(procs: list[Process], pathname: str | None):
 
 
 def plot(procs: list[Process], pathname: str | None, output: str, fixed_width: int | None):
-  plt.gcf().set_size_inches(16, 9)
+  plt.gcf().set_size_inches(16, max(9, len(procs) // 2))
   plt.gcf().set_layout_engine('constrained')
   ax = plt.gca()
 
